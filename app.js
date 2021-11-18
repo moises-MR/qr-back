@@ -8,10 +8,10 @@ const fs = require("fs");
 require("dotenv").config({path:"variables.env"});
 
 
-// const httpsServerOptions = {
-//     key : fs.readFileSync(process.env.KEY_PATH),
-//     cert: fs.readFileSync(process.env.CERT_PATH)
-// }
+const httpsServerOptions = {
+    key : fs.readFileSync(process.env.KEY_PATH),
+    cert: fs.readFileSync(process.env.CERT_PATH)
+}
 
 
 
@@ -19,14 +19,14 @@ const app = express();
 
 const PORT = process.env.PORT || 9000
 
-// const PORT_HTTP = process.env.PORT_HTTP;
-// const PORT_HTTPS = process.env.PORT_HTTPS;
+const PORT_HTTP = process.env.PORT_HTTP;
+const PORT_HTTPS = process.env.PORT_HTTPS;
 
 
 
-// app.use((req,res,next) => {
-//     if(req.secure) next(); else res.redirect(`https://${req.headers.host}${req.url}`)
-// })
+app.use((req,res,next) => {
+    if(req.secure) next(); else res.redirect(`https://${req.headers.host}${req.url}`)
+})
 
 
 app.use(cors());
@@ -50,13 +50,13 @@ app.use(router());
 
 // activar servidor
 
-// const serverHttp = http.createServer(app);
-// serverHttp.listen(PORT_HTTP);
+const serverHttp = http.createServer(app);
+serverHttp.listen(PORT_HTTP);
 
 
-// const serverHttps = https.createServer(httpsServerOptions,app);
-// serverHttps.listen(PORT_HTTPS);
+const serverHttps = https.createServer(httpsServerOptions,app);
+serverHttps.listen(PORT_HTTPS);
 
-app.listen(PORT,()=>{
-    console.log(`Active server on port ${PORT}`)
-})
+// app.listen(PORT,()=>{
+//     console.log(`Active server on port ${PORT}`)
+// })
